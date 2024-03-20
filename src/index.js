@@ -20,7 +20,7 @@ app.use(account);
 app.use(config);
 app.use(manufacturers);
 
-const mongoURI = 'mongodb+srv://lewismuema96:OFxzxEG9Rv6XZhhf@cluster0.toiwtbf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
+const mongoURI = '';
 mongoose.connect(mongoURI);
 mongoose.connection.on('connected', () => {
   console.log('Successfully connected');
