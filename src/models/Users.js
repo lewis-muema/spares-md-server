@@ -16,7 +16,36 @@ const userSchema = new mongoose.Schema({
   role: {
     type: String,
     required: false,
-  }
+  },
+  paymentMethod: {
+    type: {
+      paytype: {
+        type: String,
+        required: true,
+      },
+      provider: {
+        type: String,
+        required: false,
+      },
+      id: {
+        type: String,
+        required: false,
+      },
+    },
+    required: true,
+  },
+  type: {
+    type: String,
+    required: true,
+  },
+  status: {
+    type: String,
+    required: true,
+  },
+  currency: {
+    type: String,
+    required: true,
+  },
 });
 
 // Hash password with salt before saving to DB

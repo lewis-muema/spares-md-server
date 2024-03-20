@@ -2,12 +2,14 @@
 require('./models/Users');
 require('./models/Config');
 require('./models/Token');
+require('./models/MFG');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const auth = require('./routes/auth');
 const account = require('./routes/account');
 const config = require('./routes/config');
+const manufacturers = require('./routes/manufacturers');
 const requireAuth = require('./middlewares/requireAuth');
 
 const app = express();
@@ -16,6 +18,7 @@ app.use(bodyParser.json());
 app.use(auth);
 app.use(account);
 app.use(config);
+app.use(manufacturers);
 
 const mongoURI = 'mongodb+srv://lewismuema96:OFxzxEG9Rv6XZhhf@cluster0.toiwtbf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(mongoURI);
