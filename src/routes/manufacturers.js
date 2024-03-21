@@ -24,9 +24,11 @@ router.post('/manufacturers', async (req, res) => {
     const mfg = new MFG({ name, country, description });
     mfg.save().then((manufacturer) => {
       res.status(200).send({
-        name: manufacturer.name,
-        country: manufacturer.country,
-        description: manufacturer.description,
+        data: {
+          name: manufacturer.name,
+          country: manufacturer.country,
+          description: manufacturer.description,
+        },
         message: 'This manufacturer has been added',
       });
     }).catch((err) => {
@@ -48,7 +50,7 @@ router.put('/manufacturers/:id', async (req, res) => {
         });
         if (mfg) {
           res.status(200).send({
-            name: mfg.name, country: mfg.country, description: mfg.description, message: 'Manufacturer updated successfully',
+            data: { name: mfg.name, country: mfg.country, description: mfg.description }, message: 'Manufacturer updated successfully',
           });
         } else {
           res.status(200).send({ message: 'This manufacturer cannot be found' });
