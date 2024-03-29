@@ -50,7 +50,7 @@ router.put('/update-config/:id', async (req, res) => {
         res.status(400).send({ message: `Failed to update this config - ${err.message}` });
       }
     } else {
-      res.status(400).send({ message: 'Could not find config' });
+      res.status(400).send({ message: 'This id is not valid' });
     }
   } else {
     res.status(400).send({ message: 'You dont have the permissions to update this configuration' });

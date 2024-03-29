@@ -72,7 +72,7 @@ router.put('/car-models/:id', async (req, res) => {
         res.status(400).send({ message: `Failed to update this car model - ${err.message}` });
       }
     } else {
-      res.status(400).send({ message: 'Could not find config' });
+      res.status(400).send({ message: 'This id is not valid' });
     }
   } else {
     res.status(400).send({ message: 'You dont have the permissions to edit a car model' });

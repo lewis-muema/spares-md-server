@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/lewis-muema/spares-md-server#readme",
   "dependencies": {
+    "@typescript-eslint/eslint-plugin": "^7.3.1",
+    "@typescript-eslint/parser": "^7.3.1",
     "axios": "^1.6.8",
     "bcrypt": "^5.1.1",
     "crypto": "^1.0.1",
