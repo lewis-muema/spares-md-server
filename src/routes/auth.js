@@ -14,10 +14,10 @@ const expiry = '2160h';
 
 router.post('/signup', (req, res) => {
   const {
-    email, password, paymentMethod, type, status, currency,
+    email, password, firstname, lastname, paymentMethod, type, status, currency,
   } = req.body;
   const user = new User({
-    email, password, paymentMethod, type, status, currency,
+    email, password, firstname, lastname, paymentMethod, type, status, currency,
   });
   user.save().then(() => {
     const token = jwt.sign({ userId: user._id }, 'SECRET', { expiresIn: expiry });
