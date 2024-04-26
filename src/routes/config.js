@@ -10,6 +10,21 @@ const router = express.Router();
 router.use(requireAuth);
 
 
+router.get('/get-photo-configs', async (req, res) => {
+  const id = new mongoose.Types.ObjectId('662b9cab121e2e3deadf4a86');
+  let config = await Config.findOne({ _id: id });
+  if (!config) {
+    config = await Config.findOne({ name: 'photos' });
+  }
+  if (config) {
+    res.status(200).send({
+      config, message: 'Config fetched successfully',
+    });
+  } else {
+    res.status(400).send({ message: 'No Config found' });
+  }
+});
+
 router.post('/create-config', async (req, res) => {
   if (req.user && req.user.role === 'admin') {
     const { configuration, name } = req.body;
