@@ -1,6 +1,7 @@
 /* eslint-disable no-underscore-dangle */
 const express = require('express');
 const mongoose = require('mongoose');
+const axios = require('axios');
 const requireAuth = require('../middlewares/requireAuth');
 const hash = require('../utils/hash');
 
@@ -17,14 +18,17 @@ router.get('/get-photo-configs', async (req, res) => {
     config = await Config.findOne({ name: 'photos' });
   }
   if (config) {
-    const decrypted = {
-      client_id: hash(false, config.configuration.clientId),
-      client_secret: hash(false, config.configuration.clientSecret),
-      refresh_token: hash(false, config.configuration.refreshToken),
-    };
-    config.configuration = decrypted;
+    const response = await axios.post(
+      'https://www.googleapis.com/oauth2/v3/token',
+      {
+        client_id: hash(false, config.configuration.clientId),
+        client_secret: hash(false, config.configuration.clientSecret),
+        refresh_token: hash(false, config.configuration.refreshToken),
+        grant_type: 'refresh_token',
+      },
+    );
     res.status(200).send({
-      config, message: 'Config fetched successfully',
+      access_token: response?.data?.access_token, message: 'Config fetched successfully',
     });
   } else {
     res.status(400).send({ message: 'No Config found' });
