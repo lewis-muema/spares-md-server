@@ -17,6 +17,12 @@ router.get('/get-photo-configs', async (req, res) => {
     config = await Config.findOne({ name: 'photos' });
   }
   if (config) {
+    const decrypted = {
+      client_id: hash(false, config.configuration.clientId),
+      client_secret: hash(false, config.configuration.clientSecret),
+      refresh_token: hash(false, config.configuration.refreshToken),
+    };
+    config.configuration = decrypted;
     res.status(200).send({
       config, message: 'Config fetched successfully',
     });
