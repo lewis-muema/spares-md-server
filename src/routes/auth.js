@@ -21,7 +21,9 @@ router.post('/signup', (req, res) => {
   });
   user.save().then(() => {
     const token = jwt.sign({ userId: user._id }, 'SECRET', { expiresIn: expiry });
-    res.status(200).send({ message: 'User created successfully', token });
+    res.status(200).send({
+      message: 'User created successfully', token, email: user.email, userId: user._id,
+    });
   }).catch((err) => {
     if (err.message.includes('duplicate key')) {
       res.status(400).send({ message: 'This email account already exists' });

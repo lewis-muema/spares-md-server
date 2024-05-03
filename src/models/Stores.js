@@ -30,7 +30,7 @@ const storeSchema = new mongoose.Schema({
         required: true,
       },
     },
-    required: true,
+    required: false,
   },
   deliveryOptions: {
     type: [{
@@ -55,7 +55,7 @@ const storeSchema = new mongoose.Schema({
         required: true,
       },
     }],
-    required: true,
+    required: false,
   },
 });
 
