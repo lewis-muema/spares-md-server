@@ -51,7 +51,7 @@ router.post('/products', async (req, res) => {
     currency,
   } = req.body;
   const products = new Products({
-    userId,
+    userId: userId || req.user._id,
     name: name.toLowerCase(),
     storeId,
     price,
