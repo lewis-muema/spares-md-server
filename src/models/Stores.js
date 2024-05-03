@@ -40,19 +40,19 @@ const storeSchema = new mongoose.Schema({
       },
       fee: {
         type: Number,
-        required: true,
+        required: false,
       },
       currency: {
         type: String,
-        required: true,
+        required: false,
       },
       openingTime: {
         type: String,
-        required: true,
+        required: false,
       },
       closingTime: {
         type: String,
-        required: true,
+        required: false,
       },
     }],
     required: false,
