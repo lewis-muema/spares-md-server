@@ -33,6 +33,7 @@ router.post('/stores', async (req, res) => {
         name: store.name,
         address: store.address,
         deliveryOptions: store.deliveryOptions,
+        storeId: store._id,
       },
       message: 'This store has been added',
     });
