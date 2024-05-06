@@ -5,12 +5,9 @@ const mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const axios = require('axios');
 const sendEmail = require('../utils/sendEmail');
-const hash = require('../utils/hash');
-
 
 const User = mongoose.model('User');
 const Token = mongoose.model('Token');
-const Config = mongoose.model('Config');
 
 
 const router = express.Router();
@@ -114,26 +111,6 @@ router.post('/validate-token', async (req, res) => {
   } else {
     return res.status(400).send({ message: 'This account does not exist' });
   }
-});
-
-router.post('/locations', async (req, res) => {
-  const id = new mongoose.Types.ObjectId('6634dfcde6b1b152ab473165');
-  let config = await Config.findOne({ _id: id });
-  if (!config) {
-    config = await Config.findOne({ name: 'places' });
-  }
-  const { input } = req.body;
-  axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${hash(false, config.configuration.apiKey)}`).then((response) => {
-    if (response?.data?.status === 'REQUEST_DENIED') {
-      res.status(400).send({ message: response?.data?.error_message });
-    } else {
-      res.status(200).send({
-        message: 'Locations fetched successfully', data: response?.data,
-      });
-    }
-  }).catch((err) => {
-    res.status(400).send({ message: 'Could not fetch locations' });
-  });
 });
 
 module.exports = router;
