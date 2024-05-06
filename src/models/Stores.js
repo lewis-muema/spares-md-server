@@ -15,7 +15,7 @@ const storeSchema = new mongoose.Schema({
     type: {
       building: {
         type: String,
-        required: true,
+        required: false,
       },
       street: {
         type: String,
@@ -23,7 +23,7 @@ const storeSchema = new mongoose.Schema({
       },
       town: {
         type: String,
-        required: true,
+        required: false,
       },
       country: {
         type: String,
