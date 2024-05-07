@@ -49,6 +49,7 @@ router.post('/products', async (req, res) => {
     description,
     serialNo,
     currency,
+    image,
   } = req.body;
   const products = new Products({
     userId: userId || req.user._id,
@@ -61,6 +62,7 @@ router.post('/products', async (req, res) => {
     description,
     serialNo,
     currency,
+    image,
   });
   products.save().then((product) => {
     res.status(200).send({
@@ -82,6 +84,7 @@ router.put('/products/:id', async (req, res) => {
     description,
     serialNo,
     currency,
+    image,
   } = req.body;
   if (mongoose.Types.ObjectId.isValid(req.params.id)) {
     try {
@@ -95,6 +98,7 @@ router.put('/products/:id', async (req, res) => {
         description,
         serialNo,
         currency,
+        image,
       }, {
         returnOriginal: false,
       });
