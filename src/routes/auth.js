@@ -8,6 +8,7 @@ const sendEmail = require('../utils/sendEmail');
 
 const User = mongoose.model('User');
 const Token = mongoose.model('Token');
+const Stores = mongoose.model('Stores');
 
 
 const router = express.Router();
@@ -48,11 +49,12 @@ router.post('/signin', async (req, res) => {
     return res.status(401).send({ message: 'Email not found' });
   }
 
-  user.comparePassword(password).then((status) => {
+  user.comparePassword(password).then(async (status) => {
     if (status) {
+      const store = await Stores.findOne({ userId: user._id });
       const token = jwt.sign({ userId: user._id }, 'SECRET', { expiresIn: expiry });
       res.status(200).send({
-        token, email: user.email, userId: user._id, message: 'Successfully logged in',
+        token, email: user.email, storeId: store?._id, userId: user._id, message: 'Successfully logged in',
       });
     } else {
       res.status(401).send({ message: 'Invalid email or password' });
