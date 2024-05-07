@@ -24,7 +24,13 @@ router.post('/signup', (req, res) => {
   user.save().then(() => {
     const token = jwt.sign({ userId: user._id }, 'SECRET', { expiresIn: expiry });
     res.status(200).send({
-      message: 'User created successfully', token, email: user.email, userId: user._id,
+      message: 'User created successfully',
+      token,
+      email: user.email,
+      userId: user._id,
+      currency: user.currency,
+      type: user.type,
+      status: user.status,
     });
   }).catch((err) => {
     if (err.message.includes('duplicate key')) {
@@ -54,7 +60,14 @@ router.post('/signin', async (req, res) => {
       const store = await Stores.findOne({ userId: user._id });
       const token = jwt.sign({ userId: user._id }, 'SECRET', { expiresIn: expiry });
       res.status(200).send({
-        token, email: user.email, storeId: store?._id, userId: user._id, message: 'Successfully logged in',
+        token,
+        email: user.email,
+        storeId: store?._id,
+        userId: user._id,
+        message: 'Successfully logged in',
+        currency: user.currency,
+        type: user.type,
+        status: user.status,
       });
     } else {
       res.status(401).send({ message: 'Invalid email or password' });
