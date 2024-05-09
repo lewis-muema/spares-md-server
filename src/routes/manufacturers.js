@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
+const errorParse = require('../utils/errorParse');
 
 const MFG = mongoose.model('MFG');
 
@@ -32,7 +33,7 @@ router.post('/manufacturers', async (req, res) => {
         message: 'This manufacturer has been added',
       });
     }).catch((err) => {
-      res.status(400).send({ message: 'Failed to add manufacturer', error: err.message });
+      res.status(400).send({ message: 'Failed to add manufacturer', error: errorParse(err.message) });
     });
   } else {
     res.status(400).send({ message: 'You dont have the permissions to create a manufacturer' });
@@ -56,7 +57,7 @@ router.put('/manufacturers/:id', async (req, res) => {
           res.status(200).send({ message: 'This manufacturer cannot be found' });
         }
       } catch (err) {
-        res.status(400).send({ message: `Failed to update this manufacturer - ${err.message}` });
+        res.status(400).send({ message: `Failed to update this manufacturer - ${errorParse(err.message)}` });
       }
     } else {
       res.status(400).send({ message: 'This id is not valid' });

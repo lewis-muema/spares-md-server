@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const axios = require('axios');
 const requireAuth = require('../middlewares/requireAuth');
 const hash = require('../utils/hash');
+const errorParse = require('../utils/errorParse');
 
 const Config = mongoose.model('Config');
 
@@ -45,7 +46,7 @@ router.post('/create-config', async (req, res) => {
     config.save().then(() => {
       res.status(200).send({ message: 'This config has been created' });
     }).catch((err) => {
-      res.status(400).send({ message: `Failed to create config - ${err.message}` });
+      res.status(400).send({ message: `Failed to create config - ${errorParse(err.message)}` });
     });
   } else {
     res.status(400).send({ message: 'You dont have the permissions to create a configuration' });
@@ -72,7 +73,7 @@ router.put('/update-config/:id', async (req, res) => {
           res.status(200).send({ message: 'This config cannot be found' });
         }
       } catch (err) {
-        res.status(400).send({ message: `Failed to update this config - ${err.message}` });
+        res.status(400).send({ message: `Failed to update this config - ${errorParse(err.message)}` });
       }
     } else {
       res.status(400).send({ message: 'This id is not valid' });

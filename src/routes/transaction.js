@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
+const errorParse = require('../utils/errorParse');
 
 const Transactions = mongoose.model('Transactions');
 
@@ -55,7 +56,7 @@ router.post('/transactions', async (req, res) => {
       message: 'This transaction has been added',
     });
   }).catch((err) => {
-    res.status(400).send({ message: 'Failed to add this transaction', error: err.message });
+    res.status(400).send({ message: 'Failed to add this transaction', error: errorParse(err.message) });
   });
 });
 
@@ -81,7 +82,7 @@ router.put('/transactions/:id', async (req, res) => {
         res.status(200).send({ message: 'This transaction cannot be found' });
       }
     } catch (err) {
-      res.status(400).send({ message: 'Failed to update this transaction', error: err.message });
+      res.status(400).send({ message: 'Failed to update this transaction', error: errorParse(err.message) });
     }
   } else {
     res.status(400).send({ message: 'This id is not valid' });

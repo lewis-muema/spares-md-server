@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
+const errorParse = require('../utils/errorParse');
 
 const Wallets = mongoose.model('Wallets');
 const User = mongoose.model('User');
@@ -47,7 +48,7 @@ router.post('/wallet', async (req, res) => {
       message: 'Wallet created',
     });
   }).catch((err) => {
-    res.status(400).send({ message: 'Failed to create wallet', error: err.message });
+    res.status(400).send({ message: 'Failed to create wallet', error: errorParse(err.message) });
   });
 });
 
@@ -75,7 +76,7 @@ router.put('/wallet/:id', async (req, res) => {
         res.status(200).send({ message: 'This wallet cannot be found' });
       }
     } catch (err) {
-      res.status(400).send({ message: 'Failed to update this wallet', error: err.message });
+      res.status(400).send({ message: 'Failed to update this wallet', error: errorParse(err.message) });
     }
   } else {
     res.status(400).send({ message: 'This id is not valid' });

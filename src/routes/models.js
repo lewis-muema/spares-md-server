@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
+const errorParse = require('../utils/errorParse');
 
 const Models = mongoose.model('CarModels');
 const MFG = mongoose.model('MFG');
@@ -42,7 +43,7 @@ router.post('/car-models', async (req, res) => {
           message: 'This car model has been added',
         });
       }).catch((err) => {
-        res.status(400).send({ message: 'Failed to add car model', error: err.message });
+        res.status(400).send({ message: 'Failed to add car model', error: errorParse(err.message) });
       });
     } else {
       res.status(400).send({ message: 'Failed to find this manufacturer' });
@@ -69,7 +70,7 @@ router.put('/car-models/:id', async (req, res) => {
           res.status(200).send({ message: 'This car model cannot be found' });
         }
       } catch (err) {
-        res.status(400).send({ message: `Failed to update this car model - ${err.message}` });
+        res.status(400).send({ message: `Failed to update this car model - ${errorParse(err.message)}` });
       }
     } else {
       res.status(400).send({ message: 'This id is not valid' });

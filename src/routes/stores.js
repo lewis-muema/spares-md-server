@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
+const errorParse = require('../utils/errorParse');
 
 const Stores = mongoose.model('Stores');
 
@@ -38,7 +39,7 @@ router.post('/stores', async (req, res) => {
       message: 'This store has been added',
     });
   }).catch((err) => {
-    res.status(400).send({ message: 'Failed to add this store', error: err.message });
+    res.status(400).send({ message: 'Failed to add this store', error: errorParse(err.message) });
   });
 });
 
@@ -58,7 +59,7 @@ router.put('/stores/:id', async (req, res) => {
         res.status(200).send({ message: 'This store cannot be found' });
       }
     } catch (err) {
-      res.status(400).send({ message: 'Failed to update this store', error: err.message });
+      res.status(400).send({ message: 'Failed to update this store', error: errorParse(err.message) });
     }
   } else {
     res.status(400).send({ message: 'This id is not valid' });

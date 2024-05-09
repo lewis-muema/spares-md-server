@@ -2,6 +2,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
+const errorParse = require('../utils/errorParse');
 
 const Products = mongoose.model('Products');
 
@@ -70,7 +71,7 @@ router.post('/products', async (req, res) => {
       message: 'This product has been added',
     });
   }).catch((err) => {
-    res.status(400).send({ message: 'Failed to add this product', error: err.message });
+    res.status(400).send({ message: 'Failed to add this product', error: errorParse(err.message) });
   });
 });
 
@@ -110,7 +111,7 @@ router.put('/products/:id', async (req, res) => {
         res.status(200).send({ message: 'This product cannot be found' });
       }
     } catch (err) {
-      res.status(400).send({ message: 'Failed to update this product', error: err.message });
+      res.status(400).send({ message: 'Failed to update this product', error: errorParse(err.message) });
     }
   } else {
     res.status(400).send({ message: 'This id is not valid' });
