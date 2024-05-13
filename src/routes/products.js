@@ -26,7 +26,7 @@ router.post('/products-search', async (req, res) => {
     (a, [k, v]) => (v == null ? a : (a[k] = v, a)), {},
   );
   if (params.name) {
-    params.name = params.name.toLowerCase();
+    params.name = { $regex: `.*${params.name.toLowerCase()}*.` };
   }
   const products = await Products.find(params);
   if (products.length) {
