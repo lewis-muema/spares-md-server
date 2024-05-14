@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
 const errorParse = require('../utils/errorParse');
+const getUrl = require('../utils/fetchImageURL');
 
 const Products = mongoose.model('Products');
 
@@ -13,8 +14,9 @@ router.use(requireAuth);
 router.get('/products', async (req, res) => {
   const products = await Products.find({ userId: req.user._id });
   if (products.length) {
+    const productsWithUrls = await getUrl(products);
     res.status(200).send({
-      products, message: 'Products fetched successfully',
+      products: productsWithUrls, message: 'Products fetched successfully',
     });
   } else {
     res.status(400).send({ message: 'No products found' });
@@ -29,9 +31,10 @@ router.post('/products-search', async (req, res) => {
     params.name = { $regex: `.*${params.name.toLowerCase()}*.` };
   }
   const products = await Products.find(params);
+  const productsWithUrls = await getUrl(products);
   if (products.length) {
     res.status(200).send({
-      products, message: 'Products fetched successfully',
+      products: productsWithUrls, message: 'Products fetched successfully',
     });
   } else {
     res.status(400).send({ message: 'No products found' });
