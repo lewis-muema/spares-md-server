@@ -6,6 +6,10 @@ const errorParse = require('../utils/errorParse');
 const getUrl = require('../utils/fetchImageURL');
 
 const Products = mongoose.model('Products');
+const Models = mongoose.model('CarModels');
+const MFG = mongoose.model('MFG');
+const Stores = mongoose.model('Stores');
+
 
 const router = express.Router();
 router.use(requireAuth);
@@ -55,18 +59,28 @@ router.post('/products', async (req, res) => {
     currency,
     image,
   } = req.body;
+  const model = await Models.find({
+    _id: new mongoose.Types.ObjectId(modelId),
+  });
+  const manufacturer = await MFG.find({
+    _id: new mongoose.Types.ObjectId(manufacturerId),
+  });
+  const store = await Stores.find({
+    _id: new mongoose.Types.ObjectId(storeId),
+  });
   const products = new Products({
     userId: userId || req.user._id,
     name: name.toLowerCase(),
-    storeId,
+    model: model[0],
+    manufacturer: manufacturer[0],
+    store: store[0],
     price,
-    modelId,
-    manufacturerId,
     variants,
     description,
     serialNo,
     currency,
     image,
+    rating: 0,
   });
   products.save().then((product) => {
     res.status(200).send({
@@ -89,6 +103,7 @@ router.put('/products/:id', async (req, res) => {
     serialNo,
     currency,
     image,
+    rating,
   } = req.body;
   if (mongoose.Types.ObjectId.isValid(req.params.id)) {
     try {
@@ -103,6 +118,7 @@ router.put('/products/:id', async (req, res) => {
         serialNo,
         currency,
         image,
+        rating,
       }, {
         returnOriginal: false,
       });
