@@ -11,13 +11,20 @@ router.use(requireAuth);
 
 
 router.post('/edit-account', async (req, res) => {
-  const user = await User.findOne({ _id: req.user._id });
-  user.password = req.body.password;
-  if (req.body.role) {
-    user.role = req.body.role;
+  try {
+    const user = await User.findOne({ _id: req.user._id });
+    user.password = req.body.password;
+    if (req.body.paymentMethod) {
+      user.paymentMethod = req.body.paymentMethod;
+    }
+    if (req.body.role) {
+      user.role = req.body.role;
+    }
+    await user.save();
+    res.status(200).send({ message: 'User account edited successfully', user: user.email });
+  } catch (err) {
+    res.status(400).send({ message: err });
   }
-  await user.save();
-  res.status(200).send({ message: 'User account edited successfully', user: user.email });
 });
 
 router.delete('/delete-account', async (req, res) => {

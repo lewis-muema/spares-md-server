@@ -26,7 +26,7 @@ const userSchema = new mongoose.Schema({
     required: false,
   },
   paymentMethod: {
-    type: {
+    type: [{
       paytype: {
         type: String,
         required: true,
@@ -39,7 +39,7 @@ const userSchema = new mongoose.Schema({
         type: String,
         required: false,
       },
-    },
+    }],
     required: true,
   },
   type: {

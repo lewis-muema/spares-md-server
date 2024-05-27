@@ -31,6 +31,7 @@ router.post('/signup', (req, res) => {
       currency: user.currency,
       type: user.type,
       status: user.status,
+      paymentMethods: user.paymentMethod,
     });
   }).catch((err) => {
     if (err.message.includes('duplicate key')) {
@@ -68,6 +69,7 @@ router.post('/signin', async (req, res) => {
         currency: user.currency,
         type: user.type,
         status: user.status,
+        paymentMethods: user.paymentMethod,
       });
     } else {
       res.status(401).send({ message: 'Invalid email or password' });
