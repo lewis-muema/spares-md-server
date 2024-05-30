@@ -9,15 +9,18 @@ const sendEmail = require('../utils/sendEmail');
 const User = mongoose.model('User');
 const Token = mongoose.model('Token');
 const Stores = mongoose.model('Stores');
-
+const Paymethods = mongoose.model('Paymethods');
 
 const router = express.Router();
 const expiry = '2160h';
 
-router.post('/signup', (req, res) => {
+router.post('/signup', async (req, res) => {
   const {
-    email, password, firstname, lastname, paymentMethod, type, status, currency,
+    email, password, firstname, lastname, type, status, currency,
   } = req.body;
+  const id = new mongoose.Types.ObjectId('66586a36c9280e3ae7af92bc');
+  const paymentMethod = await Paymethods.findOne({ _id: id });
+
   const user = new User({
     email, password, firstname, lastname, paymentMethod, type, status, currency,
   });
