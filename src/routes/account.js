@@ -13,7 +13,9 @@ router.use(requireAuth);
 router.post('/edit-account', async (req, res) => {
   try {
     const user = await User.findOne({ _id: req.user._id });
-    user.password = req.body.password;
+    if (req.body.password) {
+      user.password = req.body.password;
+    }
     if (req.body.paymentMethod) {
       user.paymentMethod = req.body.paymentMethod;
     }
