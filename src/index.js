@@ -8,6 +8,7 @@ require('./models/Wallets');
 require('./models/Stores');
 require('./models/Products');
 require('./models/Transactions');
+require('./models/PayMethods');
 const express = require('express');
 const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
@@ -20,6 +21,7 @@ const wallets = require('./routes/wallets');
 const stores = require('./routes/stores');
 const products = require('./routes/products');
 const transactions = require('./routes/transaction');
+const payMethods = require('./routes/payMethods');
 const requireAuth = require('./middlewares/requireAuth');
 
 const app = express();
@@ -34,6 +36,7 @@ app.use(wallets);
 app.use(stores);
 app.use(products);
 app.use(transactions);
+app.use(payMethods);
 
 const mongoURI = 'mongodb+srv://lewismuema96:OFxzxEG9Rv6XZhhf@cluster0.toiwtbf.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0';
 mongoose.connect(mongoURI);
