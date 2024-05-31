@@ -9,6 +9,18 @@ const User = mongoose.model('User');
 const router = express.Router();
 router.use(requireAuth);
 
+router.get('/user-payment-methods', async (req, res) => {
+  try {
+    const user = await User.findOne({ _id: req.user._id });
+    if (user) {
+      res.status(200).send({ message: 'User payment methods retrieved successfully', paymethods: user.paymentMethod });
+    } else {
+      res.status(400).send({ message: 'Could not find this user' });
+    }
+  } catch (err) {
+    res.status(400).send({ message: err });
+  }
+});
 
 router.post('/edit-account', async (req, res) => {
   try {
