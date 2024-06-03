@@ -16,7 +16,6 @@ router.post('/pricing', async (req, res) => {
     location, priority, productPrice,
   } = req?.body;
   let { vehicle } = req?.body;
-  const loc = organizeLocations(location);
   vehicle = vehicle || 'Bike';
   const pricing = await Pricing.findOne({ vehicle });
   if (!productPrice) {
@@ -28,16 +27,20 @@ router.post('/pricing', async (req, res) => {
     } = pricing;
     let total = 0;
     let productTotal = productPrice;
-    if (loc.town === 'Nairobi') {
-      total = baseFee;
-    } else {
-      total = baseFee + outBoundsFee;
-    }
-    if (priority) {
-      total += priorityFee;
-    }
-    if (productPrice) {
-      productTotal = (productPrice * VAT / 100) + (productPrice * serviceFee / 100) + productPrice;
+    if (location) {
+      const loc = organizeLocations(location);
+      if (loc.town === 'Nairobi') {
+        total = baseFee;
+      } else {
+        total = baseFee + outBoundsFee;
+      }
+      if (priority) {
+        total += priorityFee;
+      }
+      if (productPrice) {
+        productTotal = (productPrice * VAT / 100)
+         + (productPrice * serviceFee / 100) + productPrice;
+      }
     }
     res.status(200).send({
       message: 'Pricing fetched successfully',
