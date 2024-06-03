@@ -40,7 +40,14 @@ router.post('/pricing', async (req, res) => {
       productTotal = (productPrice * VAT / 100) + (productPrice * serviceFee / 100) + productPrice;
     }
     res.status(200).send({
-      message: 'Pricing fetched successfully', deliveryFee: total, productTotal, currency, VAT: `${VAT}%`, serviceFee: `${serviceFee}%`,
+      message: 'Pricing fetched successfully',
+      deliveryFee: total,
+      productTotal,
+      currency,
+      VATRate: `${VAT}%`,
+      serviceFeeRate: `${serviceFee}%`,
+      VAT: productPrice * VAT / 100,
+      serviceFee: productPrice * serviceFee / 100,
     });
   } catch (error) {
     res.status(400).send(error);
