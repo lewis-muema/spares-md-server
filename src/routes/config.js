@@ -103,4 +103,5 @@ router.post('/locations', async (req, res) => {
   });
 });
 
+
 module.exports = router;
