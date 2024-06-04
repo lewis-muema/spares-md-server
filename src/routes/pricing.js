@@ -37,14 +37,15 @@ router.post('/pricing', async (req, res) => {
       if (priority) {
         total += priorityFee;
       }
-      if (productPrice) {
-        productTotal = (productPrice * VAT / 100)
-         + (productPrice * serviceFee / 100) + productPrice;
-      }
+    }
+    if (productPrice) {
+      productTotal = (productPrice * VAT / 100)
+       + (productPrice * serviceFee / 100) + productPrice + total;
     }
     res.status(200).send({
       message: 'Pricing fetched successfully',
       deliveryFee: total,
+      productPrice,
       productTotal,
       currency,
       VATRate: `${VAT}%`,
