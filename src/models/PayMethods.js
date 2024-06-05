@@ -14,6 +14,10 @@ const payMethodSchema = new mongoose.Schema({
     type: Boolean,
     required: true,
   },
+  shown: {
+    type: Boolean,
+    required: true,
+  },
 });
 
 mongoose.model('Paymethods', payMethodSchema);

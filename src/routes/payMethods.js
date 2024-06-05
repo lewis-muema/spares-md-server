@@ -22,13 +22,13 @@ router.get('/payment-methods', async (req, res) => {
 router.post('/payment-methods', async (req, res) => {
   if (req.user && req.user.role === 'admin') {
     try {
-      const { paytype, provider } = req.body;
+      const { paytype, provider, shown } = req.body;
       const paymethod = await Paymethods.findOne({ provider });
       if (paymethod) {
         return res.status(400).send({ message: 'Payment method already exists' });
       }
       const newMethod = new Paymethods({
-        paytype, provider, active: true,
+        paytype, provider, active: true, shown,
       });
       const response = await newMethod.save();
       res.status(200).send({ message: 'Payment method created successfully', data: response });
@@ -42,16 +42,16 @@ router.post('/payment-methods', async (req, res) => {
 
 router.put('/payment-methods/:id', async (req, res) => {
   if (req.user && req.user.role === 'admin') {
-    const { active } = req.body;
+    const { active, shown } = req.body;
     if (mongoose.Types.ObjectId.isValid(req.params.id)) {
       try {
         const id = new mongoose.Types.ObjectId(req.params.id);
-        const paymethod = await Paymethods.findOneAndUpdate({ _id: id }, { active }, {
+        const paymethod = await Paymethods.findOneAndUpdate({ _id: id }, { active, shown }, {
           returnOriginal: false,
         });
         if (paymethod) {
           res.status(200).send({
-            data: { ...paymethod }, message: 'Payment method updated successfully',
+            data: paymethod, message: 'Payment method updated successfully',
           });
         } else {
           res.status(200).send({ message: 'This payment method cannot be found' });
