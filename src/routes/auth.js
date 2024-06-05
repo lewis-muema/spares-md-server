@@ -18,9 +18,9 @@ router.post('/signup', async (req, res) => {
   const {
     email, password, firstname, lastname, type, status, currency,
   } = req.body;
-  const id = new mongoose.Types.ObjectId('66586a36c9280e3ae7af92bc');
-  const paymentMethod = await Paymethods.findOne({ _id: id });
-
+  const cashOnDelivery = new mongoose.Types.ObjectId('66586a36c9280e3ae7af92bc');
+  const cash = new mongoose.Types.ObjectId('6660519c06543c01c537a524');
+  const paymentMethod = await Paymethods.find({ _id: { $in: [cash, cashOnDelivery] } });
   const user = new User({
     email, password, firstname, lastname, paymentMethod, type, status, currency,
   });
