@@ -103,5 +103,21 @@ router.post('/locations', async (req, res) => {
   });
 });
 
+router.post('/coordinates', async (req, res) => {
+  const id = new mongoose.Types.ObjectId('6634dfcde6b1b152ab473165');
+  let config = await Config.findOne({ _id: id });
+  if (!config) {
+    config = await Config.findOne({ name: 'places' });
+  }
+  const { placeId } = req.body;
+  axios.get(`https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&fields=geometry&key=${hash(false, config.configuration.apiKey)}`).then((response) => {
+    res.status(200).send({
+      message: 'Coordinates fetched successfully', data: response?.data,
+    });
+  }).catch((err) => {
+    res.status(400).send({ message: 'Could not fetch coordinates' });
+  });
+});
+
 
 module.exports = router;

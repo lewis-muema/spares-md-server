@@ -41,7 +41,7 @@ const transactionSchema = new mongoose.Schema({
   },
   storeId: {
     type: String,
-    required: true,
+    required: false,
   },
   paymentMethod: {
     type: {
@@ -66,15 +66,15 @@ const transactionSchema = new mongoose.Schema({
   },
   paidStatus: {
     type: String,
-    required: true,
+    required: false,
   },
   walletId: {
     type: String,
-    required: true,
+    required: false,
   },
   walletAmount: {
     type: Number,
-    required: true,
+    required: false,
   },
   currency: {
     type: String,
@@ -106,11 +106,11 @@ const transactionSchema = new mongoose.Schema({
           },
           coordinatesX: {
             type: String,
-            required: true,
+            required: false,
           },
           coordinatesY: {
             type: String,
-            required: true,
+            required: false,
           },
         },
         required: false,
