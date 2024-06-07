@@ -5,6 +5,7 @@ const requireAuth = require('../middlewares/requireAuth');
 const errorParse = require('../utils/errorParse');
 
 const Transactions = mongoose.model('Transactions');
+const Products = mongoose.model('Products');
 
 const router = express.Router();
 router.use(requireAuth);
@@ -49,6 +50,16 @@ router.post('/transactions', async (req, res) => {
     currency,
     date,
     deliveryDetails,
+  });
+  products.forEach(async (product) => {
+    const prod = await Products.findOne({ variants: { $elemMatch: { _id: product.variantId } } })
+      .then((doc) => {
+        const item = doc.variants.id(product.variantId);
+        item.units -= product.units;
+        doc.save();
+      }).catch((err) => {
+        return res.status(400).send({ message: 'Failed to add this transaction', error: errorParse(err.message) });
+      });
   });
   transactions.save().then((transaction) => {
     res.status(200).send({

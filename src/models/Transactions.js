@@ -32,6 +32,10 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      units: {
+        type: Number,
+        required: true,
+      },
     }],
     required: false,
   },
