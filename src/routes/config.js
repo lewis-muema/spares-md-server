@@ -90,7 +90,7 @@ router.post('/locations', async (req, res) => {
     config = await Config.findOne({ name: 'places' });
   }
   const { input } = req.body;
-  axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&key=${hash(false, config.configuration.apiKey)}`).then((response) => {
+  axios.get(`https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${input}&components=country:ke&key=${hash(false, config.configuration.apiKey)}`).then((response) => {
     if (response?.data?.status === 'REQUEST_DENIED') {
       res.status(400).send({ message: response?.data?.error_message });
     } else {
