@@ -43,9 +43,12 @@ const getUrl = async (products) => {
         .filter(photo => photo.mediaItem.id === product.image)
         .map(({ mediaItem }) => mediaItem)
         .map(({ baseUrl }) => baseUrl);
-      const newProduct = product;
+      const newProduct = {
+        ...product.toObject(),
+        photoId: product.image,
+        image: url[0],
+      };
       // eslint-disable-next-line prefer-destructuring
-      newProduct.image = url[0];
       productsWithURLs.push(newProduct);
     });
   } else {
