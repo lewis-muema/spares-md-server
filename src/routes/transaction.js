@@ -11,8 +11,11 @@ const router = express.Router();
 router.use(requireAuth);
 
 
-router.get('/transactions', async (req, res) => {
-  const transactions = await Transactions.find({ userId: req.user._id });
+router.get('/transactions/:type', async (req, res) => {
+  const transactions = await Transactions.find({
+    userId: req.user._id,
+    type: req.params.type.toUpperCase(),
+  });
   if (transactions.length) {
     res.status(200).send({
       transactions, message: 'Transactions fetched successfully',
