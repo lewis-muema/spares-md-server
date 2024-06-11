@@ -3,6 +3,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const requireAuth = require('../middlewares/requireAuth');
 const errorParse = require('../utils/errorParse');
+const getUrlInVariants = require('../utils/fetchImageURLVariant');
 
 const Transactions = mongoose.model('Transactions');
 const Products = mongoose.model('Products');
@@ -16,9 +17,10 @@ router.get('/transactions/:type', async (req, res) => {
     userId: req.user._id,
     type: req.params.type.toUpperCase(),
   });
+  const transactionsWithURLs = await getUrlInVariants(transactions);
   if (transactions.length) {
     res.status(200).send({
-      transactions, message: 'Transactions fetched successfully',
+      transactions: transactionsWithURLs, message: 'Transactions fetched successfully',
     });
   } else {
     res.status(400).send({ message: 'No transactions found' });
