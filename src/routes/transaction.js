@@ -21,7 +21,7 @@ router.get('/transactions/:type', async (req, res) => {
   const transactionsWithURLs = await getUrlInVariants(transactions);
   if (transactions.length) {
     res.status(200).send({
-      transactions: transactionsWithURLs, message: 'Transactions fetched successfully',
+      transactions: transactionsWithURLs.reverse(), message: 'Transactions fetched successfully',
     });
   } else {
     res.status(400).send({ message: 'No transactions found' });
