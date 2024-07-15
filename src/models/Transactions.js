@@ -63,6 +63,23 @@ const transactionSchema = new mongoose.Schema({
     }],
     required: false,
   },
+  timeline: {
+    type: [{
+      time: {
+        type: Number,
+        required: false,
+      },
+      activity: {
+        type: String,
+        required: true,
+      },
+      event: {
+        type: String,
+        required: true,
+      },
+    }],
+    required: true,
+  },
   userId: {
     type: String,
     required: true,

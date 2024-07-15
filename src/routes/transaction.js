@@ -56,6 +56,22 @@ router.post('/transactions', async (req, res) => {
     currency,
     date,
     deliveryDetails,
+    timeline: [
+      {
+        time: new Date().valueOf(),
+        activity: 'Order created',
+        event: 'past',
+      },
+      {
+        time: new Date().valueOf(),
+        activity: 'Order pending',
+        event: 'present',
+      },
+      {
+        activity: 'Order dispatched',
+        event: 'future',
+      },
+    ],
   });
   products.forEach(async (product) => {
     const prod = await Products.findOne({ variants: { $elemMatch: { _id: product.variantId } } })
