@@ -16,6 +16,7 @@ router.get('/transactions/:type', async (req, res) => {
   const transactions = await Transactions.find({
     userId: req.user._id,
     type: req.params.type.toUpperCase(),
+    'deliveryDetails.status': { $ne: 'CANCELLED' },
   });
   const transactionsWithURLs = await getUrlInVariants(transactions);
   if (transactions.length) {
@@ -91,6 +92,51 @@ router.put('/transactions/:id', async (req, res) => {
         returnOriginal: false,
       });
       if (transaction) {
+        res.status(200).send({
+          data: transaction, message: 'Transaction updated successfully',
+        });
+      } else {
+        res.status(200).send({ message: 'This transaction cannot be found' });
+      }
+    } catch (err) {
+      res.status(400).send({ message: 'Failed to update this transaction', error: errorParse(err.message) });
+    }
+  } else {
+    res.status(400).send({ message: 'This id is not valid' });
+  }
+});
+
+router.post('/transactions/cancel/:id', async (req, res) => {
+  if (mongoose.Types.ObjectId.isValid(req.params.id)) {
+    try {
+      const id = new mongoose.Types.ObjectId(req.params.id);
+      let transaction = await Transactions.findOne({ _id: id }, {
+        returnOriginal: false,
+      });
+      if (transaction?.deliveryDetails?.status === 'PENDING') { // only restock when order is being cancelled the first time
+        transaction?.products.forEach(async (product) => {
+          const prod = await Products.findOne({
+            variants: { $elemMatch: { _id: product.variantId } },
+          })
+            .then((doc) => {
+              const item = doc.variants.id(product.variantId);
+              item.units += product.units;
+              doc.save();
+            }).catch((err) => {
+              return res.status(400).send({ message: 'Failed to add this transaction', error: errorParse(err.message) });
+            });
+        });
+      }
+      if (transaction?.deliveryDetails) {
+        const deliveryDetails = {
+          ...transaction?.deliveryDetails?._doc,
+          status: 'CANCELLED',
+        };
+        transaction = await Transactions.findOneAndUpdate({ _id: id }, {
+          deliveryDetails,
+        }, {
+          returnOriginal: false,
+        });
         res.status(200).send({
           data: transaction, message: 'Transaction updated successfully',
         });

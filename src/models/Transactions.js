@@ -40,6 +40,26 @@ const transactionSchema = new mongoose.Schema({
         type: String,
         required: true,
       },
+      description: {
+        type: String,
+        required: false,
+      },
+      color: {
+        type: String,
+        required: false,
+      },
+      material: {
+        type: String,
+        required: false,
+      },
+      size: {
+        type: String,
+        required: false,
+      },
+      weight: {
+        type: String,
+        required: false,
+      },
     }],
     required: false,
   },
